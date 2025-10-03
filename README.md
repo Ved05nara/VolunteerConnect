@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # volunteerconnect
 
 A new Flutter project.
@@ -14,3 +15,6 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+# VolunteerConnect
+>>>>>>> b89b78cb492377d30c2e5d1d28122780f6272cf5
