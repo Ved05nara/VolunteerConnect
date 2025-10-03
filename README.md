@@ -4,16 +4,6 @@
 
 This project is the first version of VolunteerConnect, built with Flutter. It's a static app that showcases the core features, with plans to connect to a live API in the future.
 
-## 📸 Screenshots
-
-*(A great README always has screenshots! Once your app is running, take a few screenshots and add them here. This is just a placeholder.)*
-
-<p align="center">
-  <img src="https://via.placeholder.com/250x500.png?text=Opportunities+Screen" alt="Opportunities Screen" hspace="10">
-  <img src="https://via.placeholder.com/250x500.png?text=How+to+Join+Screen" alt="How to Join Screen" hspace="10">
-  <img src="https://via.placeholder.com/250x500.png?text=About+Us+Screen" alt="About Screen" hspace="10">
-</p>
-
 
 ## ✨ Features
 
