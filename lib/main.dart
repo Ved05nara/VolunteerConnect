@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'screens/opportunities_screen.dart';
 import 'screens/how_to_join_screen.dart';
 import 'screens/about_screen.dart';
@@ -15,7 +16,12 @@ class VolunteerConnectApp extends StatelessWidget {
     return MaterialApp(
       title: 'VolunteerConnect',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.green,
+          brightness: Brightness.light,
+        ),
+        textTheme: GoogleFonts.latoTextTheme(Theme.of(context).textTheme),
+        useMaterial3: true,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: const MainScreen(),

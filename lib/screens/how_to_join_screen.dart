@@ -3,70 +3,49 @@ import 'package:flutter/material.dart';
 class HowToJoinScreen extends StatelessWidget {
   const HowToJoinScreen({super.key});
 
-  Widget _buildStep(BuildContext context, {required IconData icon, required String title, required String subtitle}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, size: 30, color: Colors.green[700]),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 4),
-                Text(subtitle),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('How to Become a Volunteer'),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            _buildStep(
-              context,
-              icon: Icons.person_add,
-              title: '1. Sign Up',
-              subtitle: 'Register your name and contact details with our organization to get started.',
+      body: Theme(
+        // Overriding theme locally to make the stepper controls green
+        data: Theme.of(context).copyWith(
+          colorScheme: Theme.of(context).colorScheme.copyWith(
+                primary: Colors.green,
+              ),
+        ),
+        child: Stepper(
+          // The stepper is horizontal by default, but vertical is better for long text
+          // type: StepperType.horizontal,
+          currentStep: 0, // You could make this dynamic if needed
+          steps: const [
+            Step(
+              title: Text('Sign Up'),
+              content: Text('Register your name and contact details with our organization to get started.'),
+              isActive: true,
             ),
-            const Divider(),
-            _buildStep(
-              context,
-              icon: Icons.event,
-              title: '2. Pick an Event',
-              subtitle: 'Browse through our list of opportunities and choose one that you feel passionate about.',
+            Step(
+              title: Text('Pick an Event'),
+              content: Text('Browse through our list of opportunities and choose one that you feel passionate about.'),
+              isActive: true,
             ),
-            const Divider(),
-            _buildStep(
-              context,
-              icon: Icons.access_time_filled,
-              title: '3. Arrive On Time',
-              subtitle: 'Punctuality is key. Please arrive at the specified location at least 15 minutes early.',
+            Step(
+              title: Text('Arrive On Time'),
+              content: Text('Punctuality is key. Please arrive at the specified location at least 15 minutes early.'),
+              isActive: true,
             ),
-            const Divider(),
-            _buildStep(
-              context,
-              icon: Icons.check_circle_outline,
-              title: '4. Participate with Enthusiasm',
-              subtitle: 'Engage with the community, follow the coordinator\'s lead, and make a real difference!',
+            Step(
+              title: Text('Participate!'),
+              content: Text('Engage with the community, follow the coordinator\'s lead, and make a real difference!'),
+              isActive: true,
             ),
           ],
+          // Remove the default buttons as this is for display only
+          controlsBuilder: (BuildContext context, ControlsDetails details) {
+            return const SizedBox.shrink();
+          },
         ),
       ),
     );
