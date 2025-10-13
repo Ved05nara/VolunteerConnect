@@ -3,6 +3,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:volunteer_connect/services/auth_service.dart';
 import '../models/volunteer_opportunity.dart';
 import '../services/volunteer_service.dart';
 import 'opportunity_detail_screen.dart';
@@ -25,8 +26,9 @@ class _OpportunitiesScreenState extends State<OpportunitiesScreen> {
     _opportunitiesFuture = _volunteerService.getOpportunities();
   }
 
+  // WIDGET for the category filter chips
   Widget _buildCategoryFilters() {
-    const categories = ['All', 'Environment', 'Education', 'Charity'];
+    const categories = ['All', 'Environment', 'Education', 'Health', 'Community'];
     return SizedBox(
       height: 50,
       child: ListView.builder(
@@ -42,18 +44,14 @@ class _OpportunitiesScreenState extends State<OpportunitiesScreen> {
               label: Text(category),
               selected: isSelected,
               onSelected: (selected) {
-                if (selected) {
-                  setState(() {
-                    _selectedCategory = category;
-                  });
-                }
+                if (selected) setState(() => _selectedCategory = category);
               },
-              backgroundColor:
-                  isSelected ? Colors.green[800] : Colors.green[100],
-              labelStyle:
-                  TextStyle(color: isSelected ? Colors.white : Colors.black87),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
+              backgroundColor: Colors.green[100],
+              selectedColor: Colors.green[800],
+              labelStyle: TextStyle(
+                  color: isSelected ? Colors.white : Colors.black87,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               side: BorderSide.none,
             ),
           );
@@ -62,7 +60,8 @@ class _OpportunitiesScreenState extends State<OpportunitiesScreen> {
     );
   }
 
-  Widget _buildOpportunityCard(VolunteerOpportunity event) {
+  // NEW WIDGET for a list item
+  Widget _buildOpportunityListItem(VolunteerOpportunity event) {
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -72,65 +71,62 @@ class _OpportunitiesScreenState extends State<OpportunitiesScreen> {
                     OpportunityDetailScreen(opportunity: event)));
       },
       child: Card(
-        elevation: 4,
+        elevation: 2,
+        margin: const EdgeInsets.symmetric(vertical: 8.0),
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(12.0)),
-              child: Image.asset(
-                event.imageUrl,
-                height: 110,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+            Image.asset(
+              event.imageUrl,
+              height: 120,
+              width: 110,
+              fit: BoxFit.cover,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    event.name,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      Icon(Icons.calendar_today,
-                          size: 14, color: Colors.grey.shade700),
-                      const SizedBox(width: 4),
-                      Text(
-                        DateFormat('d MMM yyyy').format(event.date),
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Icon(Icons.location_on,
-                          size: 14, color: Colors.grey.shade700),
-                      const SizedBox(width: 4),
-                      Expanded(
-                        child: Text(
-                          event.location,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      event.name,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Icon(Icons.calendar_today, size: 14, color: Colors.grey.shade700),
+                        const SizedBox(width: 4),
+                        Text(
+                          DateFormat('d MMM yyyy').format(event.date),
                           style: Theme.of(context).textTheme.bodySmall,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Icon(Icons.location_on, size: 14, color: Colors.grey.shade700),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            event.location,
+                            style: Theme.of(context).textTheme.bodySmall,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -139,24 +135,19 @@ class _OpportunitiesScreenState extends State<OpportunitiesScreen> {
     );
   }
 
-  Widget _buildShimmeringGrid(int crossAxisCount, double childAspectRatio) {
+  // WIDGET for shimmer loading effect
+  Widget _buildShimmeringList() {
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,
-      child: GridView.builder(
-        padding: const EdgeInsets.all(16.0),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: crossAxisCount,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          childAspectRatio: childAspectRatio,
-        ),
-        itemCount: 6,
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        itemCount: 5,
         itemBuilder: (context, index) {
           return Card(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            child: Container(color: Colors.white),
+            margin: const EdgeInsets.symmetric(vertical: 8.0),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            child: const SizedBox(height: 120, width: double.infinity),
           );
         },
       ),
@@ -165,29 +156,21 @@ class _OpportunitiesScreenState extends State<OpportunitiesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    int crossAxisCount;
-    double childAspectRatio;
-
-    if (screenWidth >= 1200) {
-      crossAxisCount = 5;
-      childAspectRatio = 0.95;
-    } else if (screenWidth >= 600) {
-      crossAxisCount = 3;
-      childAspectRatio = 0.85;
-    } else {
-      crossAxisCount = 2;
-      childAspectRatio = 0.9;
-    }
-
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             pinned: true,
             expandedHeight: 220.0,
+            // Added logout button here
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.logout),
+                tooltip: 'Sign Out',
+                onPressed: () => AuthService().signOut(),
+              ),
+            ],
             flexibleSpace: FlexibleSpaceBar(
-              // The `title` property that creates the collapsing top-left text has been removed.
               background: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -201,28 +184,18 @@ class _OpportunitiesScreenState extends State<OpportunitiesScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Image.asset(
-                        'logo.png',
-                        height: 80,
-                        fit: BoxFit.contain,
-                      ),
+                      Image.asset('logo.png', height: 80, fit: BoxFit.contain),
                       const SizedBox(height: 10),
-                      Text(
-                        'VolunteerConnect',
-                        style: GoogleFonts.lato(
-                          color: Colors.white,
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      Text('VolunteerConnect',
+                          style: GoogleFonts.lato(
+                              color: Colors.white,
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold)),
                       const SizedBox(height: 4),
-                      Text(
-                        "Connecting volunteers, empowering communities",
-                        style: GoogleFonts.lato(
-                          color: Colors.white.withOpacity(0.9),
-                          fontSize: 14,
-                        ),
-                      ),
+                      Text("Connecting volunteers, empowering communities",
+                          style: GoogleFonts.lato(
+                              color: Colors.white.withOpacity(0.9),
+                              fontSize: 14)),
                     ],
                   ),
                 ),
@@ -235,11 +208,7 @@ class _OpportunitiesScreenState extends State<OpportunitiesScreen> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 500,
-                    child:
-                        _buildShimmeringGrid(crossAxisCount, childAspectRatio),
-                  ),
+                  child: SizedBox(height: 500, child: _buildShimmeringList()),
                 );
               }
               if (snapshot.hasError) {
@@ -258,25 +227,20 @@ class _OpportunitiesScreenState extends State<OpportunitiesScreen> {
                       .where((op) => op.category == _selectedCategory)
                       .toList();
 
+              // CHANGED to SliverList for the new layout
               return AnimationLimiter(
                 child: SliverPadding(
-                  padding: const EdgeInsets.all(16.0),
-                  sliver: SliverGrid(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: crossAxisCount,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: childAspectRatio,
-                    ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  sliver: SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
-                        return AnimationConfiguration.staggeredGrid(
+                        return AnimationConfiguration.staggeredList(
                           position: index,
                           duration: const Duration(milliseconds: 375),
-                          columnCount: crossAxisCount,
-                          child: ScaleAnimation(
+                          child: SlideAnimation(
+                            verticalOffset: 50.0,
                             child: FadeInAnimation(
-                              child: _buildOpportunityCard(
+                              child: _buildOpportunityListItem(
                                   filteredOpportunities[index]),
                             ),
                           ),

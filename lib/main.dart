@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:volunteer_connect/auth_gate.dart'; // Import the new AuthGate
+import 'firebase_options.dart';
 import 'screens/opportunities_screen.dart';
 import 'screens/how_to_join_screen.dart';
 import 'screens/about_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const VolunteerConnectApp());
 }
 
@@ -24,7 +31,7 @@ class VolunteerConnectApp extends StatelessWidget {
         useMaterial3: true,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const MainScreen(),
+      home: const AuthGate(), // <-- THIS IS THE ONLY CHANGE
       debugShowCheckedModeBanner: false,
     );
   }
@@ -67,7 +74,7 @@ class _MainScreenState extends State<MainScreen> {
             label: 'How to Join',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.info),
+            icon: Icon(Icons.info_outline),
             label: 'About Us',
           ),
         ],
