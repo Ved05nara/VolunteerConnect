@@ -77,12 +77,30 @@ class _OpportunitiesScreenState extends State<OpportunitiesScreen> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Row(
           children: [
-            Image.asset(
-              event.imageUrl,
-              height: 120,
-              width: 110,
-              fit: BoxFit.cover,
-            ),
+            Image.network(
+            event.imageUrl,
+            height: 120,
+            width: 110,
+            fit: BoxFit.cover,
+            // Add a loading builder
+            loadingBuilder: (context, child, progress) {
+              return progress == null
+                  ? child
+                  : const SizedBox(
+                      height: 120,
+                      width: 110,
+                      child: Center(child: CircularProgressIndicator()));
+            },
+            // Add an error builder
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                height: 120,
+                width: 110,
+                color: Colors.grey[200],
+                child: Icon(Icons.broken_image, color: Colors.grey[400]),
+              );
+            },
+          ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
