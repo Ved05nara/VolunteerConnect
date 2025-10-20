@@ -25,9 +25,21 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
+<<<<<<< HEAD
         return macos;
       case TargetPlatform.windows:
         return windows;
+=======
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      case TargetPlatform.windows:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+>>>>>>> 3c39c8410d135e87e045fc0ecac0fe6ec7317773
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -66,6 +78,7 @@ class DefaultFirebaseOptions {
     storageBucket: 'volunteerconnect-5459a.firebasestorage.app',
     iosBundleId: 'com.example.volunteerconnect',
   );
+<<<<<<< HEAD
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAsUqCqpUwr6BzRsF_OxNNECm8KViY01qU',
@@ -85,4 +98,6 @@ class DefaultFirebaseOptions {
     storageBucket: 'volunteerconnect-5459a.firebasestorage.app',
     measurementId: 'G-T264BKJFS9',
   );
+=======
+>>>>>>> 3c39c8410d135e87e045fc0ecac0fe6ec7317773
 }

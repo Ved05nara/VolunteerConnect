@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:volunteer_connect/services/auth_service.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
@@ -8,18 +9,33 @@ class AboutScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('About Us'),
+        // The 'actions' property belongs inside the AppBar
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Sign Out',
+            onPressed: () {
+              // Call the signOut method from your service
+              AuthService().signOut();
+              // The AuthGate will automatically handle navigation
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Ensure you have an 'assets/logo.png' file
-            Image.asset('logo.png', height: 200, width: 300),
+            // Ensure you have a 'logo.png' file in your root assets folder
+            Image.asset('logo.png', height: 150),
             const SizedBox(height: 16),
             Text(
               "VolunteerConnect",
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 24),
             Container(
@@ -34,7 +50,10 @@ class AboutScreen extends StatelessWidget {
                 children: [
                   Text(
                     "Our Mission",
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.green[800]),
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(color: Colors.green[800]),
                   ),
                   const SizedBox(height: 8),
                   const Text(
