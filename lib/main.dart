@@ -1,12 +1,6 @@
+// lib/main.dart (FIXED)
+
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'screens/opportunities_screen.dart';
-import 'screens/how_to_join_screen.dart';
-import 'screens/about_screen.dart';
-import 'package:google_fonts/google_fonts.dart';
-=======
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:volunteer_connect/auth_gate.dart';
@@ -14,8 +8,7 @@ import 'firebase_options.dart';
 import 'screens/opportunities_screen.dart';
 import 'screens/how_to_join_screen.dart';
 import 'screens/my_events_screen.dart';
-import 'screens/profile_screen.dart'; // <-- 1. IMPORT new ProfileScreen
->>>>>>> 3c39c8410d135e87e045fc0ecac0fe6ec7317773
+import 'screens/profile_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +34,7 @@ class VolunteerConnectApp extends StatelessWidget {
         useMaterial3: true,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const AuthGate(),
+      home: const AuthGate(), // <-- This is the new, correct code
       debugShowCheckedModeBanner: false,
     );
   }
@@ -57,12 +50,12 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
-  // <-- 2. REPLACE AboutScreen with ProfileScreen
+  // <-- This is the new, correct list of screens
   static const List<Widget> _screens = <Widget>[
     OpportunitiesScreen(),
     MyEventsScreen(),
     HowToJoinScreen(),
-    ProfileScreen(), // <-- REPLACED
+    ProfileScreen(), 
   ];
 
   void _onItemTapped(int index) {
@@ -90,7 +83,7 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icon(Icons.how_to_reg),
             label: 'How to Join',
           ),
-          // <-- 3. UPDATE the icon and label
+          // <-- This is the new, correct button
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
             label: 'Profile',
