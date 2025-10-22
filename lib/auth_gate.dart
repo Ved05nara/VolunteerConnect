@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:volunteer_connect/main.dart'; // Your MainScreen
-import 'package:volunteer_connect/screens/login_screen.dart';
+import 'package:volunteer_connect/main.dart'; // Imports your MainScreen
+import 'package:volunteer_connect/screens/landing_screen.dart';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
@@ -17,13 +17,13 @@ class AuthGate extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
 
-        // If the snapshot has data, it means the user is logged in
+        // If the snapshot has data, it means the user IS logged in
         if (snapshot.hasData) {
-          return const MainScreen(); // Show the main app
+          return const MainScreen(); // <-- CORRECT: Show the main app
         }
 
-        // Otherwise, the user is not logged in
-        return const LoginScreen(); // Show the login screen
+        // Otherwise, the user IS NOT logged in
+        return const LandingScreen(); // <-- CORRECT: Show the landing page
       },
     );
   }
